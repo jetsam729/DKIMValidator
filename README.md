@@ -40,5 +40,5 @@ try {
   * Restructuring
   * Cleanup for PSR-12 and PHP 7.2
   * Various bug fixes and new features.
-* Forked intojetsam729/DKIMValidator by Andrew Elisov (jetsam) in mart 2021
+* Forked into [jetsam729/DKIMValidator](https://github.com/jetsam729/DKIMValidator) by Andrew Elisov (jetsam) in mart 2021
   * fix some alogo errors
