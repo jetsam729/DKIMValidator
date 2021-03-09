@@ -167,10 +167,18 @@ class Validator extends DKIM
                 if ($dnsKeys === false) {
                     $output[$signatureIndex][] = [
                         'status' => 'TEMPFAIL',
+                        'reason' => 'Error in DNS/NETWORK',
+                    ];
+                    continue;
+                }
+                if (empty($dnsKeys)) {
+                    $output[$signatureIndex][] = [
+                        'status' => 'PERMFAIL',
                         'reason' => 'Public key not found in DNS',
                     ];
                     continue;
                 }
+
                 $this->publicKeys[$dkimTags['d']] = $dnsKeys;
             } else {
                 $output[$signatureIndex][] = [
@@ -298,8 +306,8 @@ class Validator extends DKIM
         $host = sprintf('%s._domainkey.%s', $selector, $domain);
         $textRecords = dns_get_record($host, DNS_TXT);
 
-        if ($textRecords === false) {
-            return false;
+        if ($textRecords === false || empty($textRecords)) {
+            return $textRecords;
         }
 
         $publicKeys = [];
