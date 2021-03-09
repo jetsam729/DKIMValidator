@@ -74,6 +74,8 @@ abstract class DKIM
     /**
      * Canonicalize a header in either "relaxed" or "simple" modes.
      * Requires an array of headers (header names are part of array values)
+     * https://tools.ietf.org/html/rfc6376#section-3.5
+     * c= Message canonicalization (plain-text; OPTIONAL, default is "simple/simple").
      *
      * @param array $headers
      * @param string $style 'relaxed' or 'simple'
@@ -82,7 +84,7 @@ abstract class DKIM
      *
      * @throws DKIMException
      */
-    protected function canonicalizeHeaders(array $headers, string $style = 'relaxed'): string
+    protected function canonicalizeHeaders(array $headers, string $style = 'simple'): string
     {
         if (count($headers) === 0) {
             throw new DKIMException('Attempted to canonicalize empty header array');
@@ -117,6 +119,8 @@ abstract class DKIM
     /**
      * Canonicalize a message body in either "relaxed" or "simple" modes.
      * Requires a string containing all body content, with an optional byte-length
+     * https://tools.ietf.org/html/rfc6376#section-3.5
+     * c= Message canonicalization (plain-text; OPTIONAL, default is "simple/simple").
      *
      * @param string $body The message body
      * @param string $style 'relaxed' or 'simple' canonicalization algorithm
@@ -124,7 +128,7 @@ abstract class DKIM
      *
      * @return string
      */
-    protected function canonicalizeBody(string $body, string $style = 'relaxed', int $length = -1): string
+    protected function canonicalizeBody(string $body, string $style = 'simple', int $length = -1): string
     {
         if ($body === '') {
             return self::CRLF;
