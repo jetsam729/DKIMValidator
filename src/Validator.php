@@ -83,6 +83,10 @@ class Validator extends DKIM
                 ];
             }
 
+            // rfc6376#section-3.5 fix empty c-tag or without "/" (one word)
+            if(empty($dkimTags['c'])) $dkimTags['c'] = 'simple/simple';
+		    if(!str_contains($dkimTags['c'],'/')) $dkimTags['c'] .='/simple';
+            
             //Validate canonicalization algorithms for header and body
             [$headerCA, $bodyCA] = explode('/', $dkimTags['c']);
             if ($headerCA !== 'relaxed' && $headerCA !== 'simple') {
